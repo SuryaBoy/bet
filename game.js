@@ -30,6 +30,8 @@
 
 	var finishLine = document.getElementById('finishline');
 
+	var horseResult = document.getElementsByClassName('horseResult');
+
 	// postion of horses respectively
 	var position = [0,0,0,0,0];
 	// speed of respectives horses
@@ -183,9 +185,24 @@ function assignNewSpeed() {
 }
 
 function positionTracker() {
-	for(i=0;i<position.length;i++) {
-		position[i] = getRandomArbitrary(min, max);
-	}
+	var result = position.slice();
+
+    for (i = 0; i < result.length; ++i) 
+    {
+        for (j = i + 1; j < result.length; ++j) 
+        {
+            if (result[i] < result[j]) 
+            {
+                a = result[i];
+                result[i] = result[j];
+                result[j] = a;
+            }
+        }
+    }
+
+ 	for (i=0; i< horseResult.length; ++i) {
+ 		
+ 	}
 }
 
 // document.addEventListener('DOMContentLoaded', horseRun);
