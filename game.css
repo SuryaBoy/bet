@@ -477,7 +477,7 @@ body {overflow: hidden;}
 	width: 20vw;
 	border: 2px solid #555;
 	border-radius: 20px;
-	margin-top: 5vh;
+	margin-top: 0vh;
 	margin-left: 2vw;
 	overflow: auto;
 	float: left;
@@ -489,7 +489,7 @@ body {overflow: hidden;}
 label, input, select {float:  left; display: block; width: 8vw; margin-bottom: 0.5vh;}
 label {clear: left;}
 
-#results {width: auto; position: absolute; margin-top: 8vh; margin-left: 48vw;}
+#results {width: auto;}
 #results td {height: 30px; width: 30px; background-repeat: no-repeat; background-position: 0px -64px;}
 #results .horse1 { background-image: url(images/head0.png);}
 #results .horse2 {  background-image: url(images/head4.png);}
