@@ -33,11 +33,11 @@
 	var horseResult = document.getElementsByClassName('horseResult');
 
 	// postion of horses respectively
-	var position = [0,0,0,0,0];
+	var position = [0,0,0,0];
 	// speed of respectives horses
 	var speed = [0,0,0,0];
 	// constant speed the horses will run no matter what
-	var const_speed=0.09;
+	var const_speed=0.08;
 	// maximum and minimum values for assinging random speed to horses
 	var max=0.017;
 	var min=0;
@@ -51,6 +51,8 @@
 	var initialTrackPosition = scroller.scrollLeft;
 	const distanceInterval = (trackRight - scroller.scrollLeft)/7;
 	assignNewSpeed();
+	var cash = 100;
+	displayCash();
 // variables for game
 
 function resetGame() {
@@ -59,10 +61,6 @@ function resetGame() {
 	// speed of respectives horses
 	speed = [0,0,0,0];
 	// constant speed the horses will run no matter what
-	const_speed=0.09;
-	// maximum and minimum values for assinging random speed to horses
-	max=0.017;
-	min=0;
 
 	for (i=0; i< horses.length; i++) {
 		horses[i].classList.remove('runRight');
@@ -119,7 +117,6 @@ function gameStart(){
 
 		// for scrolling the background
 		trackScroller();
-		positionTracker();
 
 		if(gameFinish()) {
 			clearInterval(gameLooper);
@@ -175,6 +172,7 @@ function checkTrackScroll() {
 	if(partialDist >= distanceInterval) {
 		assignNewSpeed();
 		initialTrackPosition = scroller.scrollLeft;
+		positionTracker();
 	}
 }
 
@@ -199,12 +197,13 @@ function positionTracker() {
             }
         }
     }
-
  	for (i=0; i< horseResult.length; ++i) {
- 		horseResult[i].className = '';
- 		horseResult[i].classList.add('horse');
- 		horseResult[i].classList.add('horse'+position.indexOf(result[i]));
+ 		horseResult[i].className = 'horseResult';
+ 		horseResult[i].classList.add('horse'+(position.indexOf(result[i])+1));
  	}
 }
 
+function displayCash() {
+	document.getElementById('funds').innerHTML = cash;
+}
 // document.addEventListener('DOMContentLoaded', horseRun);
