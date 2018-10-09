@@ -119,7 +119,7 @@ function gameStart(){
 
 		// for scrolling the background
 		trackScroller();
-		// positionTracker();
+		positionTracker();
 
 		if(gameFinish()) {
 			clearInterval(gameLooper);
@@ -201,7 +201,9 @@ function positionTracker() {
     }
 
  	for (i=0; i< horseResult.length; ++i) {
- 		
+ 		horseResult[i].className = '';
+ 		horseResult[i].classList.add('horse');
+ 		horseResult[i].classList.add('horse'+position.indexOf(result[i]));
  	}
 }
 
