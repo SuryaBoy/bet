@@ -54,6 +54,7 @@
 	var cash = 100;
 	var betOption = document.getElementById('amount');
 	var betHorse = document.getElementById('bethorse');
+	var finalResult = [];
 	displayCash();
 // variables for game
 
@@ -77,6 +78,7 @@ function resetGame() {
 
 function gameStart(){
 
+	bet();
 	// give the running effect when game starts by adding class runRight
 	horse1.classList.add('runRight');
 	horse2.classList.add('runRight');
@@ -111,6 +113,7 @@ function gameStart(){
 				if (horses[j].getBoundingClientRect().left > finishLine.getBoundingClientRect().right) {
 					horses[j].classList.remove('runRight');
 					horses[j].classList.add('finish');
+					finalResult.push(j);
 				} else {
 					horses[j].style.left = position[j] + 'vw' ; 
 				}
@@ -121,6 +124,7 @@ function gameStart(){
 		trackScroller();
 
 		if(gameFinish()) {
+			resultDisplay();
 			clearInterval(gameLooper);
 		}
 
@@ -174,7 +178,7 @@ function checkTrackScroll() {
 	if(partialDist >= distanceInterval) {
 		assignNewSpeed();
 		initialTrackPosition = scroller.scrollLeft;
-		positionTracker();
+		// positionTracker();
 	}
 }
 
@@ -210,11 +214,24 @@ function displayCash() {
 }
 
 function bet() {
-	betAmount = betOption.option[betOption.selectedIndex].value;
+	betAmount = betOption.options[betOption.selectedIndex].value;
 	if(betAmount > cash) {
 		alert('You cannot bet more then you have');
 		return false;
 	}
 	cash = cash - betAmount;
+	displayCash();
+	inputDisable();
+}
+
+function inputDisable() {
+	betOption.disabled = true;
+	betHorse.disabled = true;
+}
+
+function resultDisplay() {
+	for(i=0;i<finalResult.length;i++) {
+		horseResult[i].classList.add('horse'+(i+1));
+	}
 }
 // document.addEventListener('DOMContentLoaded', horseRun);
