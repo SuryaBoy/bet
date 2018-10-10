@@ -52,6 +52,8 @@
 	const distanceInterval = (trackRight - scroller.scrollLeft)/7;
 	assignNewSpeed();
 	var cash = 100;
+	var betOption = document.getElementById('amount');
+	var betHorse = document.getElementById('bethorse');
 	displayCash();
 // variables for game
 
@@ -205,5 +207,14 @@ function positionTracker() {
 
 function displayCash() {
 	document.getElementById('funds').innerHTML = cash;
+}
+
+function bet() {
+	betAmount = betOption.option[betOption.selectedIndex].value;
+	if(betAmount > cash) {
+		alert('You cannot bet more then you have');
+		return false;
+	}
+	cash = cash - betAmount;
 }
 // document.addEventListener('DOMContentLoaded', horseRun);
