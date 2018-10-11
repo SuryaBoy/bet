@@ -55,6 +55,7 @@
 	var betOption = document.getElementById('amount');
 	var betHorse = document.getElementById('bethorse');
 	var finalResult = [];
+	var horseFinisherCount = 0;
 	displayCash();
 // variables for game
 
@@ -77,7 +78,7 @@ function resetGame() {
 
 
 function gameStart(){
-
+	horseFinisherCount = 0;
 	bet();
 	// give the running effect when game starts by adding class runRight
 	horse1.classList.add('runRight');
@@ -85,7 +86,7 @@ function gameStart(){
 	horse3.classList.add('runRight');
 	horse4.classList.add('runRight');
 
-	// for animatin
+	// for animation
 	gameLooper = setInterval(frame, 8);
 
 	function frame(){
@@ -111,11 +112,14 @@ function gameStart(){
 				}
 
 				if (horses[j].getBoundingClientRect().left > finishLine.getBoundingClientRect().right) {
-					horses[j].classList.remove('runRight');
-					horses[j].classList.add('finish');
-					finalResult.push(j);
+					if(horses[j].classList.contains('runRight')) {
+						horses[j].classList.remove('runRight');
+						horses[j].classList.add('finish');
+						finalResult.push(j);
+						horseFinisherCount++;
+					}
 				} else {
-					horses[j].style.left = position[j] + 'vw' ; 
+					horses[j].style.left = position[j] + 'vw' ;
 				}
 
 			}
@@ -124,16 +128,16 @@ function gameStart(){
 		trackScroller();
 
 		if(gameFinish()) {
-			resultDisplay();
 			clearInterval(gameLooper);
+			resultDisplay();
 		}
 
 	}
 
-	function horseJump(jumper){
-		jumper.classList.add('jump');
-	}
+}
 
+function horseJump(jumper){
+	jumper.classList.add('jump');
 }
 
 // function to generate arpitrary random number
@@ -149,13 +153,7 @@ function collisionDetector(x1,w1,x2,w2) {
 }
 
 function gameFinish() {
-	finishCount = 0;
-	for(i=0;i<horses.lenght;i++) {
-		if(horses[i].classList.contains('finish')) {
-			finishCount++;
-		}
-	}
-	if(finishCount > 3) {
+	if(horseFinisherCount > 3) {
 		return true;
 	}
 	else {
@@ -231,7 +229,7 @@ function inputDisable() {
 
 function resultDisplay() {
 	for(i=0;i<finalResult.length;i++) {
-		horseResult[i].classList.add('horse'+(i+1));
+		horseResult[i].classList.add('horse'+(finalResult[i]+1));
 	}
 }
 // document.addEventListener('DOMContentLoaded', horseRun);
