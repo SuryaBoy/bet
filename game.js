@@ -53,6 +53,7 @@
 	assignNewSpeed();
 	var cash = 100;
 	var betOption = document.getElementById('amount');
+	var betAmount = 0;
 	var betHorse = document.getElementById('bethorse');
 	var finalResult = [];
 	var horseFinisherCount = 0;
@@ -186,26 +187,26 @@ function assignNewSpeed() {
 	}
 }
 
-function positionTracker() {
-	var result = position.slice();
+// function positionTracker() {
+// 	var result = position.slice();
 
-    for (i = 0; i < result.length; ++i) 
-    {
-        for (j = i + 1; j < result.length; ++j) 
-        {
-            if (result[i] < result[j]) 
-            {
-                a = result[i];
-                result[i] = result[j];
-                result[j] = a;
-            }
-        }
-    }
- 	for (i=0; i< horseResult.length; ++i) {
- 		horseResult[i].className = 'horseResult';
- 		horseResult[i].classList.add('horse'+(position.indexOf(result[i])+1));
- 	}
-}
+//     for (i = 0; i < result.length; ++i) 
+//     {
+//         for (j = i + 1; j < result.length; ++j) 
+//         {
+//             if (result[i] < result[j]) 
+//             {
+//                 a = result[i];
+//                 result[i] = result[j];
+//                 result[j] = a;
+//             }
+//         }
+//     }
+//  	for (i=0; i< horseResult.length; ++i) {
+//  		horseResult[i].className = 'horseResult';
+//  		horseResult[i].classList.add('horse'+(position.indexOf(result[i])+1));
+//  	}
+// }
 
 function displayCash() {
 	document.getElementById('funds').innerHTML = cash;
@@ -230,6 +231,29 @@ function inputDisable() {
 function resultDisplay() {
 	for(i=0;i<finalResult.length;i++) {
 		horseResult[i].classList.add('horse'+(finalResult[i]+1));
+	}
+}
+
+function checkWinner() {
+	if(bethorse.options[betOption.selectedIndex].value == finalResult[0]) {
+		return true;
+	}
+	return false;
+}
+
+function gameDirector() {
+	if (checkWinner()) {
+		cash = cash + (betAmount*2);
+	}
+
+	if (cash <= 0) {
+		alert('you loose');
+	}
+	else if( cash >= 500) {
+		alert('you win');
+	}
+	else {
+		alert('play next game')
 	}
 }
 // document.addEventListener('DOMContentLoaded', horseRun);
