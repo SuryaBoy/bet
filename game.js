@@ -74,65 +74,73 @@ function resetGame() {
 	clearInterval(gameLooper);
 	scroller.scrollLeft = 0;
 	initialTrackPosition = scroller.scrollLeft;
+	finalResult = [];
+	horseFinisherCount = 0;
+	resetResultDisplay();
+	inputEnable();
 	assignNewSpeed();
+	displayCash();
 }
 
 
 function gameStart(){
-	horseFinisherCount = 0;
-	bet();
-	// give the running effect when game starts by adding class runRight
-	horse1.classList.add('runRight');
-	horse2.classList.add('runRight');
-	horse3.classList.add('runRight');
-	horse4.classList.add('runRight');
+	if(!bet()) {
+		resetGame();
+	} else {
+		// give the running effect when game starts by adding class runRight
+		horse1.classList.add('runRight');
+		horse2.classList.add('runRight');
+		horse3.classList.add('runRight');
+		horse4.classList.add('runRight');
 
-	// for animation
-	gameLooper = setInterval(frame, 8);
+		// for animation
+		gameLooper = setInterval(frame, 8);
 
-	function frame(){
-			checkTrackScroll();
-			for(i=0; i<position.length; i++) {
-				position[i] = position[i] + const_speed + speed[i];
+		function frame(){
+				checkTrackScroll();
+				for(i=0; i<position.length; i++) {
+					position[i] = position[i] + const_speed + speed[i];
+				}
+
+				for (j=0; j<horses.length; j++) {
+					var collision = false;
+					for (i=0; i< bushes.length; i++) {
+						x1 = window.scrollX + bushes[i].getBoundingClientRect().left;
+						w1 = bushes[i].offsetWidth;
+						x2 = window.scrollX + horses[j].getBoundingClientRect().left;
+						w2 = horses[j].offsetWidth;
+						if (collisionDetector(x1,w1,x2,w2)) {
+							horseJump(horses[j]);
+							collision = true;
+						}
+					}
+					if (!collision) {
+						horses[j].classList.remove('jump');
+					}
+
+					if (horses[j].getBoundingClientRect().left > finishLine.getBoundingClientRect().right) {
+						if(horses[j].classList.contains('runRight')) {
+							horses[j].classList.remove('runRight');
+							horses[j].classList.add('finish');
+							finalResult.push(j);
+							horseFinisherCount++;
+						}
+					} else {
+						horses[j].style.left = position[j] + 'vw' ;
+					}
+
+				}
+
+			// for scrolling the background
+			trackScroller();
+
+			if(gameFinish()) {
+				clearInterval(gameLooper);
+				resultDisplay();
+				gameDirector();
 			}
 
-			for (j=0; j<horses.length; j++) {
-				var collision = false;
-				for (i=0; i< bushes.length; i++) {
-					x1 = window.scrollX + bushes[i].getBoundingClientRect().left;
-					w1 = bushes[i].offsetWidth;
-					x2 = window.scrollX + horses[j].getBoundingClientRect().left;
-					w2 = horses[j].offsetWidth;
-					if (collisionDetector(x1,w1,x2,w2)) {
-						horseJump(horses[j]);
-						collision = true;
-					}
-				}
-				if (!collision) {
-					horses[j].classList.remove('jump');
-				}
-
-				if (horses[j].getBoundingClientRect().left > finishLine.getBoundingClientRect().right) {
-					if(horses[j].classList.contains('runRight')) {
-						horses[j].classList.remove('runRight');
-						horses[j].classList.add('finish');
-						finalResult.push(j);
-						horseFinisherCount++;
-					}
-				} else {
-					horses[j].style.left = position[j] + 'vw' ;
-				}
-
-			}
-
-		// for scrolling the background
-		trackScroller();
-
-		if(gameFinish()) {
-			clearInterval(gameLooper);
-			resultDisplay();
 		}
-
 	}
 
 }
@@ -177,7 +185,6 @@ function checkTrackScroll() {
 	if(partialDist >= distanceInterval) {
 		assignNewSpeed();
 		initialTrackPosition = scroller.scrollLeft;
-		// positionTracker();
 	}
 }
 
@@ -186,27 +193,6 @@ function assignNewSpeed() {
 		speed[i] = getRandomArbitrary(min, max);
 	}
 }
-
-// function positionTracker() {
-// 	var result = position.slice();
-
-//     for (i = 0; i < result.length; ++i) 
-//     {
-//         for (j = i + 1; j < result.length; ++j) 
-//         {
-//             if (result[i] < result[j]) 
-//             {
-//                 a = result[i];
-//                 result[i] = result[j];
-//                 result[j] = a;
-//             }
-//         }
-//     }
-//  	for (i=0; i< horseResult.length; ++i) {
-//  		horseResult[i].className = 'horseResult';
-//  		horseResult[i].classList.add('horse'+(position.indexOf(result[i])+1));
-//  	}
-// }
 
 function displayCash() {
 	document.getElementById('funds').innerHTML = cash;
@@ -217,15 +203,22 @@ function bet() {
 	if(betAmount > cash) {
 		alert('You cannot bet more then you have');
 		return false;
+	} else {
+		cash = cash - betAmount;
+		displayCash();
+		inputDisable();
+		return true;
 	}
-	cash = cash - betAmount;
-	displayCash();
-	inputDisable();
 }
 
 function inputDisable() {
 	betOption.disabled = true;
 	betHorse.disabled = true;
+}
+
+function inputEnable() {
+	betOption.disabled = false;
+	betHorse.disabled = false;	
 }
 
 function resultDisplay() {
@@ -234,8 +227,14 @@ function resultDisplay() {
 	}
 }
 
+function resetResultDisplay() {
+	for(i=0;i<horseResult.length;i++) {
+		horseResult[i].className = 'horseResult';
+	}
+}
+
 function checkWinner() {
-	if(bethorse.options[betOption.selectedIndex].value == finalResult[0]) {
+	if(betHorse.options[betHorse.selectedIndex].value == finalResult[0]) {
 		return true;
 	}
 	return false;
@@ -253,7 +252,17 @@ function gameDirector() {
 		alert('you win');
 	}
 	else {
-		alert('play next game')
+		gameContinue();
+	}
+}
+
+function gameContinue() {
+	var conf = confirm("Start Next Race ?");
+	if (conf == true) {
+		resetGame();
+	}
+	else {
+		alert("Sayu Nara");
 	}
 }
 // document.addEventListener('DOMContentLoaded', horseRun);
