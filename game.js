@@ -60,7 +60,7 @@
 	displayCash();
 	var gallopSound = document.getElementById("gallop");
 	var crowdSound = document.getElementById("crowd");
-// variables for game
+	// variables for game
 
 function resetGame() {
 	// postion of horses respectively
