@@ -58,6 +58,8 @@
 	var finalResult = [];
 	var horseFinisherCount = 0;
 	displayCash();
+	var gallopSound = document.getElementById("gallop");
+	var crowdSound = document.getElementById("crowd");
 // variables for game
 
 function resetGame() {
@@ -87,6 +89,9 @@ function gameStart(){
 	if(!bet()) {
 		resetGame();
 	} else {
+		gallopSound.loop = true;
+		crowdSound.loop = true;
+		gameTrackSoundChange(true);
 		// give the running effect when game starts by adding class runRight
 		horse1.classList.add('runRight');
 		horse2.classList.add('runRight');
@@ -135,6 +140,7 @@ function gameStart(){
 			trackScroller();
 
 			if(gameFinish()) {
+				gameTrackSoundChange(false);
 				clearInterval(gameLooper);
 				resultDisplay();
 				gameDirector();
@@ -247,9 +253,11 @@ function gameDirector() {
 
 	if (cash <= 0) {
 		alert('you loose');
+		playAgain();
 	}
 	else if( cash >= 500) {
 		alert('you win');
+		playAgain();
 	}
 	else {
 		gameContinue();
@@ -263,6 +271,27 @@ function gameContinue() {
 	}
 	else {
 		alert("Sayu Nara");
+	}
+}
+
+function playAgain() {
+	var conf = confirm("Play Again ?");
+	if (conf == true) {
+		cash = 100;
+		resetGame();
+	}
+	else {
+		alert("Sayu Nara");
+	}
+}
+
+function gameTrackSoundChange(onOf) {
+	if (onOf) {
+		gallopSound.play();
+		crowdSound.play();
+	} else {
+		gallopSound.pause();
+		crowdSound.pause();	
 	}
 }
 // document.addEventListener('DOMContentLoaded', horseRun);
