@@ -61,6 +61,12 @@
 	var gallopSound = document.getElementById("gallop");
 	var crowdSound = document.getElementById("crowd");
 	// variables for game
+	const startBtn = document.getElementById("start");
+
+	// When the user clicks on the button, open the modal
+	startBtn.onclick = function() {
+	  gameStart();
+	}
 
 function resetGame() {
 	// postion of horses respectively
