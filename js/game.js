@@ -61,6 +61,14 @@
 	var gallopSound = document.getElementById("gallop");
 	var crowdSound = document.getElementById("crowd");
 	// variables for game
+	const startBtn = document.getElementById("start");
+
+	// When the user clicks on the start button, start the game
+	startBtn.onclick = function() {
+	  gameStart();
+	  //disable the start button
+	  startBtn.disabled = true;
+	}
 
 function resetGame() {
 	// postion of horses respectively
@@ -82,6 +90,8 @@ function resetGame() {
 	inputEnable();
 	assignNewSpeed();
 	displayCash();
+	// enable the start button
+	startBtn.disabled = false;
 }
 
 
