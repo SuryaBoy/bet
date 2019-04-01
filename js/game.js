@@ -63,9 +63,11 @@
 	// variables for game
 	const startBtn = document.getElementById("start");
 
-	// When the user clicks on the button, open the modal
+	// When the user clicks on the start button, start the game
 	startBtn.onclick = function() {
 	  gameStart();
+	  //disable the start button
+	  startBtn.disabled = true;
 	}
 
 function resetGame() {
@@ -88,6 +90,8 @@ function resetGame() {
 	inputEnable();
 	assignNewSpeed();
 	displayCash();
+	// enable the start button
+	startBtn.disabled = false;
 }
 
 
