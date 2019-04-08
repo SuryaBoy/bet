@@ -52,6 +52,7 @@
 	const distanceInterval = (trackRight - scroller.scrollLeft)/7;
 	assignNewSpeed();
 	var cash = 100;
+	var betBoard = document.getElementById('bet');
 	var betOption = document.getElementById('amount');
 	var betAmount = 0;
 	var betHorse = document.getElementById('bethorse');
@@ -65,9 +66,11 @@
 
 	// When the user clicks on the start button, start the game
 	startBtn.onclick = function() {
-	  gameStart();
-	  //disable the start button
-	  startBtn.disabled = true;
+		if(checkInputs() == true) {
+		  //disable the start button
+		  startBtn.disabled = true;
+			gameStart();
+		}
 	}
 
 function resetGame() {
@@ -217,6 +220,8 @@ function displayCash() {
 function bet() {
 	betAmount = betOption.options[betOption.selectedIndex].value;
 	if(betAmount > cash) {
+		addBorderAnim(betBoard);
+		addBorderAnim(betOption);
 		alert('You cannot bet more then you have');
 		return false;
 	} else {
@@ -234,7 +239,7 @@ function inputDisable() {
 
 function inputEnable() {
 	betOption.disabled = false;
-	betHorse.disabled = false;	
+	betHorse.disabled = false;
 }
 
 function resultDisplay() {
@@ -303,5 +308,32 @@ function gameTrackSoundChange(onOf) {
 		gallopSound.pause();
 		crowdSound.pause();	
 	}
+}
+
+function checkInputs() {
+	amt = betOption.options[betOption.selectedIndex].value;
+	hrs = betHorse.options[betOption.selectedIndex].value;
+	if(amt == '' || hrs == '') {
+		if(amt == '') {
+			addBorderAnim(betOption);
+		}
+		if(hrs == '') {
+			addBorderAnim(betHorse);
+		}
+		addBorderAnim(betBoard);
+		return false;
+	}
+	removeBorderAnim(betOption);
+	removeBorderAnim(betHorse);
+	removeBorderAnim(betBoard);
+	return true;
+}
+
+function addBorderAnim(ele) {
+	ele.classList.add('borderanim');
+}
+
+function removeBorderAnim(ele) {
+	ele.classList.remove('borderanim');
 }
 // document.addEventListener('DOMContentLoaded', horseRun);
