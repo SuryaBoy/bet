@@ -54,7 +54,19 @@
   width: 80%;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
   animation-name: animatetop;
-  animation-duration: 0.4s
+  animation-duration: 0.4s;
+}
+
+/* Modal Content */
+.general-modal .modal-content {
+  margin: auto;
+  width: 50%;
+}
+
+#modal-body-text {
+  font-weight: 700;
+  font-size: 20px;
+  color: #095798;
 }
 
 /* Add Animation */

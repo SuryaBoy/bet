@@ -52,7 +52,11 @@
 	const distanceInterval = (trackRight - scroller.scrollLeft)/7;
 	assignNewSpeed();
 	var cash = 100;
-	var betBoard = document.getElementById('bet');
+	const betBoard = document.getElementById('bet');
+	const genrModal = document.getElementById('generalModal');
+	const modalHeadText = document.getElementById('modal-head-text');
+	const modalBodyText = document.getElementById('modal-body-text');
+	const modalFooterText = document.getElementById('modal-footer-text');
 	var betOption = document.getElementById('amount');
 	var betAmount = 0;
 	var betHorse = document.getElementById('bethorse');
@@ -222,7 +226,8 @@ function bet() {
 	if(betAmount > cash) {
 		addBorderAnim(betBoard);
 		addBorderAnim(betOption);
-		alert('You cannot bet more then you have');
+		displayModal('Sorry', "But your bet is more then you have !! \<br\>Please lower the bet amount", "Thank You");
+		// alert('You cannot bet more then you have');
 		return false;
 	} else {
 		cash = cash - betAmount;
@@ -280,7 +285,13 @@ function gameDirector() {
 }
 
 function gameContinue() {
-	var conf = confirm("Start Next Race ?");
+	var conf;
+	if (checkWinner()) {
+		conf = confirm("Wow Your Horse Won !! Start Next Race ?");
+	}
+	else {
+		conf = confirm("Bad bet you still have chance. Start Next Race ?");
+	}
 	if (conf == true) {
 		resetGame();
 	}
@@ -312,7 +323,7 @@ function gameTrackSoundChange(onOf) {
 
 function checkInputs() {
 	amt = betOption.options[betOption.selectedIndex].value;
-	hrs = betHorse.options[betOption.selectedIndex].value;
+	hrs = betHorse.options[betHorse.selectedIndex].value;
 	if(amt == '' || hrs == '') {
 		if(amt == '') {
 			addBorderAnim(betOption);
@@ -321,6 +332,7 @@ function checkInputs() {
 			addBorderAnim(betHorse);
 		}
 		addBorderAnim(betBoard);
+		displayModal('Excuse Me','Please place your bet first before starting the race !!! \<br\> Bet board is on the lower left corner', 'Thank You');
 		return false;
 	}
 	removeBorderAnim(betOption);
@@ -335,5 +347,12 @@ function addBorderAnim(ele) {
 
 function removeBorderAnim(ele) {
 	ele.classList.remove('borderanim');
+}
+
+function displayModal(header='',body='',footer='') {
+	modalHeadText.innerHTML = header;
+	modalBodyText.innerHTML = body;
+	modalFooterText.innerHTML = footer;
+	genrModal.style.display = "block";
 }
 // document.addEventListener('DOMContentLoaded', horseRun);
