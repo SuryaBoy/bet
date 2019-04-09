@@ -54,7 +54,19 @@
   width: 80%;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
   animation-name: animatetop;
-  animation-duration: 0.4s
+  animation-duration: 0.4s;
+}
+
+/* Modal Content */
+.general-modal .modal-content {
+  margin: auto;
+  width: 50%;
+}
+
+#modal-body-text {
+  font-weight: 700;
+  font-size: 20px;
+  color: #095798;
 }
 
 /* Add Animation */
@@ -78,4 +90,18 @@
   margin-left: 10px;
   cursor:pointer;
   font-weight: 400;
+}
+
+/* The animation code */
+@keyframes bordercolor {
+    from {border-color: red;}
+    to {border-color: black;}
+}
+
+.borderanim {
+    animation-name: bordercolor;
+    animation-duration: 0.3s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate-reverse;
+    animation-timing-function: cubic-bezier(.75,-0.71,.08,.55);
 }

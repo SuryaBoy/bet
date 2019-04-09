@@ -52,6 +52,11 @@
 	const distanceInterval = (trackRight - scroller.scrollLeft)/7;
 	assignNewSpeed();
 	var cash = 100;
+	const betBoard = document.getElementById('bet');
+	const genrModal = document.getElementById('generalModal');
+	const modalHeadText = document.getElementById('modal-head-text');
+	const modalBodyText = document.getElementById('modal-body-text');
+	const modalFooterText = document.getElementById('modal-footer-text');
 	var betOption = document.getElementById('amount');
 	var betAmount = 0;
 	var betHorse = document.getElementById('bethorse');
@@ -65,9 +70,11 @@
 
 	// When the user clicks on the start button, start the game
 	startBtn.onclick = function() {
-	  gameStart();
-	  //disable the start button
-	  startBtn.disabled = true;
+		if(checkInputs() == true) {
+		  //disable the start button
+		  startBtn.disabled = true;
+			gameStart();
+		}
 	}
 
 function resetGame() {
@@ -217,7 +224,10 @@ function displayCash() {
 function bet() {
 	betAmount = betOption.options[betOption.selectedIndex].value;
 	if(betAmount > cash) {
-		alert('You cannot bet more then you have');
+		addBorderAnim(betBoard);
+		addBorderAnim(betOption);
+		displayModal('Sorry', "But your bet is more then you have !! \<br\>Please lower the bet amount", "Thank You");
+		// alert('You cannot bet more then you have');
 		return false;
 	} else {
 		cash = cash - betAmount;
@@ -234,7 +244,7 @@ function inputDisable() {
 
 function inputEnable() {
 	betOption.disabled = false;
-	betHorse.disabled = false;	
+	betHorse.disabled = false;
 }
 
 function resultDisplay() {
@@ -275,7 +285,13 @@ function gameDirector() {
 }
 
 function gameContinue() {
-	var conf = confirm("Start Next Race ?");
+	var conf;
+	if (checkWinner()) {
+		conf = confirm("Wow Your Horse Won !! Start Next Race ?");
+	}
+	else {
+		conf = confirm("Bad bet you still have chance. Start Next Race ?");
+	}
 	if (conf == true) {
 		resetGame();
 	}
@@ -303,5 +319,40 @@ function gameTrackSoundChange(onOf) {
 		gallopSound.pause();
 		crowdSound.pause();	
 	}
+}
+
+function checkInputs() {
+	amt = betOption.options[betOption.selectedIndex].value;
+	hrs = betHorse.options[betHorse.selectedIndex].value;
+	if(amt == '' || hrs == '') {
+		if(amt == '') {
+			addBorderAnim(betOption);
+		}
+		if(hrs == '') {
+			addBorderAnim(betHorse);
+		}
+		addBorderAnim(betBoard);
+		displayModal('Excuse Me','Please place your bet first before starting the race !!! \<br\> Bet board is on the lower left corner', 'Thank You');
+		return false;
+	}
+	removeBorderAnim(betOption);
+	removeBorderAnim(betHorse);
+	removeBorderAnim(betBoard);
+	return true;
+}
+
+function addBorderAnim(ele) {
+	ele.classList.add('borderanim');
+}
+
+function removeBorderAnim(ele) {
+	ele.classList.remove('borderanim');
+}
+
+function displayModal(header='',body='',footer='') {
+	modalHeadText.innerHTML = header;
+	modalBodyText.innerHTML = body;
+	modalFooterText.innerHTML = footer;
+	genrModal.style.display = "block";
 }
 // document.addEventListener('DOMContentLoaded', horseRun);
