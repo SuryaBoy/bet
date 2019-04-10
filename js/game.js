@@ -34,9 +34,9 @@
 	// speed of respectives horses
 	var speed = [0,0,0,0];
 	// constant speed the horses will run no matter what
-	var const_speed=0.08;
+	var const_speed=0.145;
 	// maximum and minimum values for assinging random speed to horses
-	var max=0.017;
+	var max=0.02;
 	var min=0;
 
 	var max1 , max2 , max3 , max4 ;
@@ -44,6 +44,7 @@
 	var gameLooper;
 
 	const frameRight = document.querySelector('.window').getBoundingClientRect().right;
+	const backgroundScrollSpeed = 2;
 	var trackRight = document.querySelector('.track').getBoundingClientRect().right;
 	var initialTrackPosition = scroller.scrollLeft;
 	const distanceInterval = (trackRight - scroller.scrollLeft)/7;
@@ -201,7 +202,7 @@ function trackScroller() {
 	if(frameRight < trackRight)
 	{
 		// for scrolling the background
-		scroller.scrollLeft = scroller.scrollLeft + 1;
+		scroller.scrollLeft = scroller.scrollLeft + backgroundScrollSpeed;
 	}
 }
 
