@@ -110,7 +110,9 @@ function gameStart(){
 		resetGame();
 	} else {
 		gallopSound.loop = true;
+		crowdSound.currentTime = 0;
 		crowdSound.loop = true;
+		crowdSound.volume = 0.1;
 		gameTrackSoundChange(true);
 		// give the running effect when game starts by adding class runRight
 		horse1.classList.add('runRight');
