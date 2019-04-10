@@ -29,9 +29,9 @@ span2.onclick = function(event) {
 	}
 }
 
-// When the user clicks anywhere outside of the modal, close it
+// When the user clicks anywhere outside of the modal, close it, except for the ask modal
 window.onclick = function(event) {
-  if (event.target.classList.contains('modal')) {
+  if (event.target.classList.contains('modal') && (event.target.id !='askModal')) {
     event.target.style.display = "none";
   }
 }

@@ -1,24 +1,21 @@
 
-	console.log(window.scrollX + document.querySelector('.window').getBoundingClientRect().left);
-	console.log(window.scrollX + document.querySelector('.track').getBoundingClientRect().right);
+	// console.log(window.scrollX + document.querySelector('.window').getBoundingClientRect().left);
+	// console.log(window.scrollX + document.querySelector('.track').getBoundingClientRect().right);
 	var mywindow = {};
-	// mywindow.left = window.scrollX + document.querySelector('.window').getBoundingClientRect().left;
-	// mywindow.right = window.scrollX + document.querySelector('.window').getBoundingClientRect().right;
-	// console.log(mywindow);
 	const myframe = document.getElementById('scroll');
 	mywindow.left = myframe.scrollLeft;
 	mywindow.right = myframe.scrollLeft + myframe.offsetWidth;
-	console.log(mywindow);
+	// console.log(mywindow);
 	const bushes = document.getElementsByClassName('bush');
-	console.log(bushes.length);
-	for (i=0; i<bushes.length; i++) {
-		console.log(window.scrollX + bushes[i].getBoundingClientRect().left);
-		console.log(bushes[i].offsetWidth);
-	}
+	// console.log(bushes.length);
+	// for (i=0; i<bushes.length; i++) {
+	// 	console.log(window.scrollX + bushes[i].getBoundingClientRect().left);
+	// 	console.log(bushes[i].offsetWidth);
+	// }
 	const horses = document.getElementsByClassName('horse');
-	for (i=0; i< horses.length; i++) {
-		console.log(window.scrollX + horses[i].getBoundingClientRect().left)
-	}
+	// for (i=0; i< horses.length; i++) {
+	// 	console.log(window.scrollX + horses[i].getBoundingClientRect().left)
+	// }
 
 // variables for game
 	var horse1 = document.getElementById('horse1');
@@ -54,9 +51,14 @@
 	var cash = 100;
 	const betBoard = document.getElementById('bet');
 	const genrModal = document.getElementById('generalModal');
+	const askModal = document.getElementById('askModal');
 	const modalHeadText = document.getElementById('modal-head-text');
 	const modalBodyText = document.getElementById('modal-body-text');
 	const modalFooterText = document.getElementById('modal-footer-text');
+	const askModalHeadText = document.getElementById('ask-modal-head-text');
+	const askModalBodyText = document.getElementById('ask-modal-body-text');
+	const yesBtn = document.getElementById('yes-btn');
+	const noBtn = document.getElementById('no-btn');
 	var betOption = document.getElementById('amount');
 	var betAmount = 0;
 	var betHorse = document.getElementById('bethorse');
@@ -227,7 +229,6 @@ function bet() {
 		addBorderAnim(betBoard);
 		addBorderAnim(betOption);
 		displayModal('Sorry', "But your bet is more then you have !! \<br\>Please lower the bet amount", "Thank You");
-		// alert('You cannot bet more then you have');
 		return false;
 	} else {
 		cash = cash - betAmount;
@@ -285,30 +286,25 @@ function gameDirector() {
 }
 
 function gameContinue() {
-	var conf;
+	const goodMsg = "Wow Your Horse Won !!! \<br\> Start Next Race ?";
+	const badMsg = "Bad bet you still have chance. \<br\> Start Next Race ?";
+	var msg;
 	if (checkWinner()) {
-		conf = confirm("Wow Your Horse Won !! Start Next Race ?");
+		msg = goodMsg;
 	}
 	else {
-		conf = confirm("Bad bet you still have chance. Start Next Race ?");
+		msg = badMsg;
 	}
-	if (conf == true) {
-		resetGame();
-	}
-	else {
-		alert("Sayu Nara");
-	}
+	confirmation("Hello There", msg, resetGame);
 }
 
 function playAgain() {
-	var conf = confirm("Play Again ?");
-	if (conf == true) {
-		cash = 100;
-		resetGame();
-	}
-	else {
-		alert("Sayu Nara");
-	}
+	confirmation("Hello There", "Want to Play Again", resetGameWithCash);
+}
+
+function resetGameWithCash() {
+	cash = 100;
+	resetGame();
 }
 
 function gameTrackSoundChange(onOf) {
@@ -354,5 +350,18 @@ function displayModal(header='',body='',footer='') {
 	modalBodyText.innerHTML = body;
 	modalFooterText.innerHTML = footer;
 	genrModal.style.display = "block";
+}
+
+function confirmation(header='Confirm The Action',message='Are You Sure ?',callback) {
+	askModalHeadText.innerHTML = header;
+	askModalBodyText.innerHTML = message;
+	askModal.style.display = "block";
+	yesBtn.onclick = function() {
+		callback();
+		askModal.style.display = "none";
+	}
+	noBtn.onclick = function() {
+		askModal.style.display = "none";
+	}
 }
 // document.addEventListener('DOMContentLoaded', horseRun);
